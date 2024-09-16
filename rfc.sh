@@ -10,7 +10,8 @@ fetch_rfc_txt() {
 
 list_rfc_index() {
 	curl -s https://www.rfc-editor.org/rfc/rfc-index.txt | \
-	awk '/^[0-9]+ / {print substr($0, 1, index($0, ".") - 1)}'
+	awk '/^[0-9]+ / {gsub(/[[:space:]]+$/,""); print $0}' | \
+	awk '!/^$/'
 }
 
 if [ $# -eq 0 ]; then
