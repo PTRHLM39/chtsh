@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
 
 # set -x
+CACHE_DIR="/tmp/rfc-cache"
+
+mkdir -p "$CACHE_DIR"
+
 fetch_rfc_txt() {
 	local rfc_number=$1
 	local url="https://www.rfc-editor.org/rfc/rfc${rfc_number}.txt"
+  local cache_file="$CACHE_DIR/rfc${rfc_number}.txt"
 
-	curl -s -f "$url" | less -R
+  if [ -f "$cache_file" ]; then
+    less -R "$cache_file"
+  else
+    curl -s -f "$url" > "$cache_file"
+    less -R "$cache_file"
+  fi
 }
 
 list_rfc_index() {
